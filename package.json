@@ -1,0 +1,19 @@
+{
+  "name": "git-auto-merge",
+  "version": "1.0.0",
+  "description": "Utility to automatically merge git branches",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sanketmeghani/git-auto-merge.git"
+  },
+  "author": "sanket.meghani@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sanketmeghani/git-auto-merge/issues"
+  },
+  "homepage": "https://github.com/sanketmeghani/git-auto-merge#readme"
+}
