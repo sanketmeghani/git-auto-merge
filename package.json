@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/sanketmeghani/git-auto-merge/issues"
   },
-  "homepage": "https://github.com/sanketmeghani/git-auto-merge#readme"
+  "homepage": "https://github.com/sanketmeghani/git-auto-merge#readme",
+  "dependencies": {
+    "simple-git": "1.67.0"
+  }
 }
