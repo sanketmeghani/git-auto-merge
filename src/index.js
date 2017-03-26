@@ -2,22 +2,40 @@ import simpleGit from 'simple-git';
 
 const git = simpleGit('../test-repo');
 
+const checkoutDevelop = (error, success) => {
+
+	if(error) {
+		console.log('Unable to checkout develop branch', error);		
+	} else {
+		console.log('Checked out develop branch');
+	}
+};
+
 const checkoutAPI = (error, success) => {
 
 	if(error) {
-		console.log('Unable to checkout branch develop.api', error);
-		console.log('Response', success);
+		console.log('Unable to checkout develop.api branch', error);
 	}else {
-		console.log('Checked out branch develop.api');
+		console.log('Checked out develop.api branch');
 	}
 };
 
 const pullDevelop = (error, success) => {
 
 	if(error) {
-		console.log('Unable to pull develop', error);
+		console.log('Unable to pull develop branch', error);
 	} else {
 		console.log('Develop branch pulled successfully');
+		console.log(success);
+	}
+};
+
+const pullAPI = (error, success) => {
+
+	if(error) {
+		console.log('Unable to pull develop.api branch', error);
+	} else {
+		console.log('Develop.api branch pulled successfully');
 		console.log(success);
 	}
 };
@@ -32,12 +50,24 @@ const mergeBrances = (error, success) => {
 	}
 };
 
-const sendMail = () => {
+const pushAPI = (error, success) => {
 
+	if(error) {
+		console.log('Unable to push develop.api', error);
+	} else {
+		console.log('API branch pushed successfully');
+		console.log(success);
+	}
+}
+
+const sendMail = () => {
 	console.log('Merge completed');
 };
 
-git.checkout('develop.api', checkoutAPI)
-	.pull('origin', 'develop', '', pullDevelop)
+git.checkout('develop', checkoutDevelop)
+	.pull('origin', 'develop', {}, pullDevelop)
+	.checkout('develop.api', checkoutAPI)
+	.pull('origin', 'develop.api', {}, pullAPI)
 	.mergeFromTo('develop', 'develop.api', ['--no-ff', '-m "Pulling changed from develop"'], mergeBrances)
+	.push('origin', 'develop.api', pushAPI)
 	.then(sendMail);
