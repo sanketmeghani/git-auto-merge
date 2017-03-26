@@ -4,6 +4,7 @@
   "description": "Utility to automatically merge git branches",
   "main": "index.js",
   "scripts": {
+    "merge-branches": "babel-node src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
