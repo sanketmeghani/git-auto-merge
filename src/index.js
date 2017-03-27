@@ -1,9 +1,10 @@
 import simpleGit from 'simple-git';
 
-const git = simpleGit('../test-repo');
+const git = simpleGit();
 
-const sourceBranch = process.env.source;
-const targetBranch = process.env.target;
+const workingDir = process.env.workingDir;
+const sourceBranch = process.env.sourceBranch;
+const targetBranch = process.env.targetBranch;
 
 const checkoutSourceBranch = (error, success) => {
 
@@ -69,7 +70,8 @@ const sendMail = () => {
 
 const pullAndMerge = () => {
 
-	git.checkout(sourceBranch, checkoutSourceBranch)
+	git.cwd(workingDir)
+		.checkout(sourceBranch, checkoutSourceBranch)
 		.pull('origin', sourceBranch, {}, pullSourceBranch)
 		.checkout(targetBranch, checkoutTargetBranch)
 		.pull('origin', targetBranch, {}, pullTargetBranch)
@@ -81,8 +83,10 @@ const pullAndMerge = () => {
 console.log('************************************');
 console.log(`Merging branches @ ${new Date()}`);
 console.log('************************************');
-console.log('Source branch: ', process.env.source);
-console.log('Target branch: ', process.env.target);
+console.log(`Working directory: ${workingDir}`);
+console.log(`Source branch: ${sourceBranch}`);
+console.log(`Target branch: ${targetBranch}`);
+console.log('------------------------------------');
 console.log();
 pullAndMerge();
 console.log('************************************');
