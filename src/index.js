@@ -2,40 +2,43 @@ import simpleGit from 'simple-git';
 
 const git = simpleGit('../test-repo');
 
-const checkoutDevelop = (error, success) => {
+const sourceBranch = process.env.source;
+const targetBranch = process.env.target;
+
+const checkoutSourceBranch = (error, success) => {
 
 	if(error) {
-		console.log('Unable to checkout develop branch', error);		
+		console.log(`Unable to checkout ${sourceBranch} branch`, error);		
 	} else {
-		console.log('Checked out develop branch');
+		console.log(`Checked out ${sourceBranch} branch`);
 	}
 };
 
-const checkoutAPI = (error, success) => {
+const checkoutTargetBranch = (error, success) => {
 
 	if(error) {
-		console.log('Unable to checkout develop.api branch', error);
+		console.log(`Unable to checkout ${targetBranch} branch`, error);
 	}else {
-		console.log('Checked out develop.api branch');
+		console.log(`Checked out ${targetBranch} branch`);
 	}
 };
 
-const pullDevelop = (error, success) => {
+const pullSourceBranch = (error, success) => {
 
 	if(error) {
-		console.log('Unable to pull develop branch', error);
+		console.log(`Unable to pull ${sourceBranch} branch`, error);
 	} else {
-		console.log('Develop branch pulled successfully');
+		console.log('Source branch pulled successfully');
 		console.log(success);
 	}
 };
 
-const pullAPI = (error, success) => {
+const pullTargetBranch = (error, success) => {
 
 	if(error) {
-		console.log('Unable to pull develop.api branch', error);
+		console.log(`Unable to pull ${targetBranch} branch`, error);
 	} else {
-		console.log('Develop.api branch pulled successfully');
+		console.log('Target branch pulled successfully');
 		console.log(success);
 	}
 };
@@ -50,12 +53,12 @@ const mergeBrances = (error, success) => {
 	}
 };
 
-const pushAPI = (error, success) => {
+const pushTargetBranch = (error, success) => {
 
 	if(error) {
-		console.log('Unable to push develop.api', error);
+		console.log(`Unable to push ${targetBranch}`, error);
 	} else {
-		console.log('API branch pushed successfully');
+		console.log(`${targetBranch} branch pushed successfully`);
 		console.log(success);
 	}
 }
@@ -64,10 +67,22 @@ const sendMail = () => {
 	console.log('Merge completed');
 };
 
-git.checkout('develop', checkoutDevelop)
-	.pull('origin', 'develop', {}, pullDevelop)
-	.checkout('develop.api', checkoutAPI)
-	.pull('origin', 'develop.api', {}, pullAPI)
-	.mergeFromTo('develop', 'develop.api', ['--no-ff', '-m "Pulling changed from develop"'], mergeBrances)
-	.push('origin', 'develop.api', pushAPI)
-	.then(sendMail);
+const pullAndMerge = () => {
+
+	git.checkout(sourceBranch, checkoutSourceBranch)
+		.pull('origin', sourceBranch, {}, pullSourceBranch)
+		.checkout(targetBranch, checkoutTargetBranch)
+		.pull('origin', targetBranch, {}, pullTargetBranch)
+		.mergeFromTo(sourceBranch, targetBranch, ['--no-ff', '-m "Pulling changed from develop"'], mergeBrances)
+		.push('origin', targetBranch, pushTargetBranch)
+		.then(sendMail);
+};
+
+console.log('************************************');
+console.log(`Merging branches @ ${new Date()}`);
+console.log('************************************');
+console.log('Source branch: ', process.env.source);
+console.log('Target branch: ', process.env.target);
+console.log();
+pullAndMerge();
+console.log('************************************');
